@@ -1,7 +1,10 @@
 import React from "react";
 import logo from "./images/logo.png";
-import Homepage from "./components/Homepage/index";
+// import Homepage from "./components/Homepage/index";
+// import Hospital from "./components/Hospital/index";
+// import Admin from "./components/Admin/index";
+import Parents from "./components/Parents/index";
 
 export default function App() {
-  return <Homepage logo={logo}></Homepage>;
+  return <Parents logo={logo} />;
 }
