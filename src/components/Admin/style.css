@@ -1,0 +1,17 @@
+.card {
+  width: 35em;
+  background-color: rgb(238, 236, 255);
+}
+
+.card-title,
+.card-text {
+  color: rgb(65, 65, 65);
+}
+
+.card-text {
+  font-size: 4rem;
+}
+
+.user-list {
+  color: rgb(0, 25, 107);
+}
