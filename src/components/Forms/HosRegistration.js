@@ -1,14 +1,17 @@
 import React, { useState } from "react";
 import "./forms.css";
-function Registration() {
+
+function HosRegistration() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [contactNumber, setContactNumber] = useState("");
+  const [phoneNum, setPhoneNum] = useState("");
   const [address, setAddress] = useState("");
+  const [publicOrPrivate, setPublicOrprivate] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const [body, setBody] = useState({});
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -16,7 +19,8 @@ function Registration() {
       const innerBody = {
         name,
         email,
-        contactNumber,
+        phoneNum,
+        publicOrPrivate,
         address,
         password,
         confirmPassword,
@@ -33,7 +37,7 @@ function Registration() {
       <div className="container">
         <main className="forms">
           <legend className="h1">Register</legend>
-          <form method="get" onSubmit={(e) => handleSubmit(e)}>
+          <form method="get" onClick={(e) => handleSubmit(e)}>
             <div className="row mt-4">
               <div className="col-6">
                 <label className="form-label mt-3" htmlFor="name">
@@ -60,17 +64,30 @@ function Registration() {
                   onChange={(e) => setEmail(e.target.value)}
                 />
 
-                <label className="form-label mt-3" htmlFor="contact-number">
+                <label className="form-label mt-3" htmlFor="phone-number">
                   Contact number*
                 </label>
                 <input
                   className="form-control"
                   type="tel"
-                  name="contact-number"
-                  id="contact-number"
+                  name="phone-number"
+                  id="phone-number"
                   required
-                  onChange={(e) => setContactNumber(e.target.value)}
+                  onChange={(e) => setPhoneNum(e.target.value)}
                 />
+
+                <label className="form-label mt-3" htmlFor="email-address">
+                  Govt or Private
+                </label>
+                <select
+                  className="form-select"
+                  onChange={(e) => setPublicOrprivate(e.target.value)}
+                >
+                  <option>Select a value</option>
+                  <option>Govt</option>
+                  <option>Private</option>
+                  <option>Semi_Govt</option>
+                </select>
               </div>
 
               <div className="col-6">
@@ -120,9 +137,13 @@ function Registration() {
             </div>
           </form>
           <div className="form-text">
-            Have Account?{" "}
+            Have Account?
             <span>
               <a href="/login">Login</a>
+            </span>
+            <br />
+            <span>
+              <a href="/register">Register a user</a>
             </span>
           </div>
         </main>
@@ -130,4 +151,5 @@ function Registration() {
     </>
   );
 }
-export default Registration;
+
+export default HosRegistration;
