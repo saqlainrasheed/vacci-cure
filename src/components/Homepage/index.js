@@ -1,16 +1,15 @@
 import React from "react";
 
-export default function index({ logo }) {
+export default function Index({ logo }) {
   return (
     <>
-      {/* Homepage Navbar */}
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <div className="container">
-          <a className="navbar-brand d-flex flex-auto" href="/homepage">
+          <a className="navbar-brand d-flex flex-auto" href="/">
             <img src={logo} alt="Vacci-cure logo" width="150px" />
           </a>
           <button
-            className="navbar-toggler"
+            className="navbar-toggler "
             type="button"
             data-bs-toggle="collapse"
             data-bs-target="#navbarNav"
@@ -23,22 +22,24 @@ export default function index({ logo }) {
           <div className="collapse navbar-collapse " id="navbarNav">
             <ul className="navbar-nav w-100 d-flex justify-content-between">
               <li className="nav-item">
-                <a
-                  className="nav-link active"
-                  aria-current="page"
-                  href="/homepage"
-                >
+                <a className="nav-link active" aria-current="page" href="/">
                   Home
                 </a>
               </li>
               <div className="d-flex float-right">
                 <li className="nav-item">
-                  <a className="nav-link btn btn-primary" href="/login">
+                  <a
+                    className="nav-link btn btn-primary text-light"
+                    href="/login"
+                  >
                     Login
                   </a>
                 </li>
                 <li className="nav-item ms-2">
-                  <a className="nav-link btn btn-warning" href="/register">
+                  <a
+                    className="nav-link btn btn-warning text-dark"
+                    href="/register"
+                  >
                     Register
                   </a>
                 </li>
@@ -70,7 +71,9 @@ export default function index({ logo }) {
             </h5>
             <br />
             <br />
-            <button className="btn btn-warning">Register your child</button>
+            <a className="btn btn-warning" href="/register">
+              Register your child
+            </a>
           </div>
         </div>
       </header>

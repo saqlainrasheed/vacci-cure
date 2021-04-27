@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./forms.css";
-function Login() {
+function Login({ logo }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [body, setBody] = useState({});
@@ -17,7 +17,52 @@ function Login() {
 
   return (
     <>
-      <div className="container">
+      <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <div className="container">
+          <a className="navbar-brand d-flex flex-auto" href="/">
+            <img src={logo} alt="Vacci-cure logo" width="150px" />
+          </a>
+          <button
+            className="navbar-toggler "
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span className="navbar-toggler-icon"></span>
+          </button>
+          <div className="collapse navbar-collapse " id="navbarNav">
+            <ul className="navbar-nav w-100 d-flex justify-content-between">
+              <li className="nav-item">
+                <a className="nav-link active" aria-current="page" href="/">
+                  Home
+                </a>
+              </li>
+              <div className="d-flex float-right">
+                <li className="nav-item">
+                  <a
+                    className="nav-link btn btn-primary text-light"
+                    href="/register"
+                  >
+                    Register Parent
+                  </a>
+                </li>
+                <li className="nav-item ms-2">
+                  <a
+                    className="nav-link btn btn-warning text-dark"
+                    href="/register-hospital"
+                  >
+                    Register Hospital
+                  </a>
+                </li>
+              </div>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <div className="container form-conatainer">
         <main className="forms">
           <legend className="h1">Login</legend>
           <form method="get" onSubmit={(e) => handleSubmit(e)}>
@@ -48,7 +93,7 @@ function Login() {
             <input
               type="submit"
               name="submit"
-              value="email"
+              value="Login"
               className="btn btn-primary mt-4"
             />
           </form>

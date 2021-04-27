@@ -2,7 +2,7 @@ import React from "react";
 import profile from "../../images/profile.png";
 import "./style.css";
 
-export default function index({ logo }) {
+export default function Index({ logo }) {
   return (
     <>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -26,7 +26,7 @@ export default function index({ logo }) {
               <li className="nav-item"></li>
               <div className="d-flex float-right">
                 <li className="nav-item">
-                  <a href="/" className="btn btn-primary">
+                  <a href="/add-child" className="btn btn-primary">
                     + Register child
                   </a>
                 </li>
@@ -50,20 +50,17 @@ export default function index({ logo }) {
                       aria-labelledby="dropdownMenuButton1"
                     >
                       <li>
-                        <a
-                          className="dropdown-item"
-                          href="/admin/change-password"
-                        >
+                        <a className="dropdown-item" href="/change-password">
                           Change Password
                         </a>
                       </li>
                       <li>
-                        <a className="dropdown-item" href="/admin/edit-profile">
+                        <a className="dropdown-item" href="/edit-profile">
                           Edit profile
                         </a>
                       </li>
                       <li>
-                        <a className="dropdown-item" href="admin/logout">
+                        <a className="dropdown-item" href="/logout">
                           Logout
                         </a>
                       </li>

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./forms.css";
 
-function HosRegistration() {
+function HosRegistration({ logo }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNum, setPhoneNum] = useState("");
@@ -34,9 +34,55 @@ function HosRegistration() {
 
   return (
     <>
-      <div className="container">
+      <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <div className="container">
+          <a className="navbar-brand d-flex flex-auto" href="/">
+            <img src={logo} alt="Vacci-cure logo" width="150px" />
+          </a>
+          <button
+            className="navbar-toggler "
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span className="navbar-toggler-icon"></span>
+          </button>
+          <div className="collapse navbar-collapse " id="navbarNav">
+            <ul className="navbar-nav w-100 d-flex justify-content-between">
+              <li className="nav-item">
+                <a className="nav-link active" aria-current="page" href="/">
+                  Home
+                </a>
+              </li>
+              <div className="d-flex float-right">
+                <li className="nav-item">
+                  <a
+                    className="nav-link btn btn-primary text-light"
+                    href="/login"
+                  >
+                    Login
+                  </a>
+                </li>
+                <li className="nav-item ms-2">
+                  <a
+                    className="nav-link btn btn-warning text-dark"
+                    href="/register"
+                  >
+                    Register as a parent
+                  </a>
+                </li>
+              </div>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      <div className="container form-conatainer">
         <main className="forms">
-          <legend className="h1">Register</legend>
+          <legend className="h1">Register Hospital</legend>
           <form method="get" onClick={(e) => handleSubmit(e)}>
             <div className="row mt-4">
               <div className="col-6">

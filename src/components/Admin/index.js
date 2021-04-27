@@ -2,13 +2,13 @@ import React from "react";
 import profile from "../../images/profile.png";
 import "./style.css";
 
-export default function index({ logo }) {
+export default function Index({ logo }) {
   return (
     <>
       {/* Navbar will go here */}
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <div className="container">
-          <a className="navbar-brand d-flex flex-auto" href="/homepage">
+          <a className="navbar-brand d-flex flex-auto" href="/">
             <img src={logo} alt="Vacci-cure logo" width="150px" />
           </a>
           <button
@@ -42,20 +42,17 @@ export default function index({ logo }) {
                       aria-labelledby="dropdownMenuButton1"
                     >
                       <li>
-                        <a className="dropdown-item" href="/register-child">
+                        <a className="dropdown-item" href="/add-child">
                           Register Child
                         </a>
                       </li>
                       <li>
-                        <a className="dropdown-item" href="/admin/new-user">
+                        <a className="dropdown-item" href="/register">
                           new-user
                         </a>
                       </li>
                       <li>
-                        <a
-                          className="dropdown-item"
-                          href="/admin/register-hospital"
-                        >
+                        <a className="dropdown-item" href="/register-hospital">
                           Register Hospital
                         </a>
                       </li>
@@ -82,20 +79,17 @@ export default function index({ logo }) {
                       aria-labelledby="dropdownMenuButton1"
                     >
                       <li>
-                        <a
-                          className="dropdown-item"
-                          href="/admin/change-password"
-                        >
+                        <a className="dropdown-item" href="/change-password">
                           Change Password
                         </a>
                       </li>
                       <li>
-                        <a className="dropdown-item" href="/admin/edit-profile">
+                        <a className="dropdown-item" href="/edit-profile">
                           Edit profile
                         </a>
                       </li>
                       <li>
-                        <a className="dropdown-item" href="admin/logout">
+                        <a className="dropdown-item" href="/logout">
                           Logout
                         </a>
                       </li>
@@ -157,8 +151,14 @@ export default function index({ logo }) {
               <td>Ahmed ali</td>
               <td>1-20-2021</td>
               <td>
-                <a className="btn btn-primary"> edit </a>
-                <a className="btn btn-danger mx-2"> Delete </a>
+                <a className="btn btn-primary" href="\edit">
+                  {" "}
+                  edit{" "}
+                </a>
+                <a className="btn btn-danger mx-2" href="\delete">
+                  {" "}
+                  Delete{" "}
+                </a>
               </td>
             </tr>
             <tr>
@@ -167,8 +167,14 @@ export default function index({ logo }) {
               <td>Zeeshan wajid</td>
               <td>1-20-2021</td>
               <td>
-                <a className="btn btn-primary"> edit </a>
-                <a className="btn btn-danger mx-2"> Delete </a>
+                <a className="btn btn-primary" href="\edit">
+                  {" "}
+                  edit{" "}
+                </a>
+                <a className="btn btn-danger mx-2" href="\edit">
+                  {" "}
+                  Delete{" "}
+                </a>
               </td>
             </tr>
             <tr>
@@ -177,8 +183,14 @@ export default function index({ logo }) {
               <td> John Mike</td>
               <td>1-20-2021</td>
               <td>
-                <a className="btn btn-primary"> edit </a>
-                <a className="btn btn-danger mx-2"> Delete </a>
+                <a className="btn btn-primary" href="\edit">
+                  {" "}
+                  edit{" "}
+                </a>
+                <a className="btn btn-danger mx-2" href="\edit">
+                  {" "}
+                  Delete{" "}
+                </a>
               </td>
             </tr>
           </tbody>
