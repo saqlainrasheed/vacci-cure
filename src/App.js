@@ -22,10 +22,10 @@ export default function App() {
           <Route path="/parents" exact>
             <Parents logo={logo} />
           </Route>
-          <Route path="/Admin">
+          <Route path="/admin">
             <Admin logo={logo} />
           </Route>
-          <Route path="/Hospital" exact>
+          <Route path="/hospital" exact>
             <Hospital logo={logo} />
           </Route>
           <Route path="/login" exact>

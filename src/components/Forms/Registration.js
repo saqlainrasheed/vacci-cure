@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Redirect } from "react-router";
 import "./forms.css";
 function Registration({ logo }) {
   const [name, setName] = useState("");
@@ -8,23 +9,30 @@ function Registration({ logo }) {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const [body, setBody] = useState({});
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (password === confirmPassword) {
-      const innerBody = {
-        name,
-        email,
-        contactNumber,
-        address,
-        password,
-        confirmPassword,
-      };
-      setBody(innerBody);
-      console.log("submitted : ", body);
+      fetch("http://localhost:5000/api/register", {
+        method: "post",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          fullname: name,
+          email: email,
+          contact_number: contactNumber,
+          address: address,
+          password: password,
+        }),
+      })
+        .then((res) => res.json())
+        .then((user) => {
+          if (user) {
+            <Redirect to="/parents" exact />;
+          }
+        })
+        .catch((err) => console.log(err));
     } else {
-      console.log("Passwords doesn't match");
+      alert("Password and confirm password doesn't match");
     }
   };
 

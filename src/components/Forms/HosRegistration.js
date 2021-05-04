@@ -10,25 +10,30 @@ function HosRegistration({ logo }) {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const [body, setBody] = useState({});
-
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (password === confirmPassword) {
-      const innerBody = {
-        name,
-        email,
-        phoneNum,
-        publicOrPrivate,
-        address,
-        password,
-        confirmPassword,
-      };
-      setBody(innerBody);
-      console.log("submitted : ", body);
+      fetch("http://localhost:5000/api/register-hospital", {
+        method: "post",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          hospital_name: name,
+          email: email,
+          contact_number: phoneNum,
+          govt_private: publicOrPrivate,
+          password: password,
+          address: address,
+          user_role: "hospital",
+        }),
+      })
+        .then((res) => res.json())
+        .then((user) => {
+          console.log(user);
+        })
+        .catch((err) => console.log(err));
     } else {
-      console.log("Passwords doesn't match");
+      alert("Password and confirm password doesn't match");
     }
   };
 

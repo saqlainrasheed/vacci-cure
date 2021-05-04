@@ -3,16 +3,25 @@ import "./forms.css";
 function Login({ logo }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [body, setBody] = useState({});
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const innerBody = {
-      email,
-      password,
-    };
-    setBody(innerBody);
-    console.log("submitted : ", body);
+    fetch("http://localhost:5000/api/login", {
+      method: "post",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        email: email,
+        password: password,
+      }),
+    })
+      .then((res) => res.json())
+      .then((user) => {
+        console.log(user);
+        // if (user) {
+        //   <Redirect to="/parents" />;
+        // }
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
