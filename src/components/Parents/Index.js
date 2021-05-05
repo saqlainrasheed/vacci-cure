@@ -1,7 +1,13 @@
 import React from "react";
+import { useSelector } from "react-redux";
+import { Redirect } from "react-router";
 import profile from "../../images/profile.png";
 
 export default function Index({ logo }) {
+  const { user, authorized } = useSelector((state) => state);
+  if (!authorized) {
+    return <Redirect to="/login" />;
+  }
   const child = true;
   const childInfo = {
     name: "Muhammad Ahsan",

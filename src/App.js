@@ -11,7 +11,10 @@ import HosRegistration from "./components/Forms/HosRegistration";
 
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
+import { useSelector } from "react-redux";
 export default function App() {
+  const state = useSelector((state) => state);
+  console.log(state);
   return (
     <>
       <Router>

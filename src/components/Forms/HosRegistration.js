@@ -1,7 +1,10 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router";
 import "./forms.css";
 
 function HosRegistration({ logo }) {
+  const history = useHistory();
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNum, setPhoneNum] = useState("");
@@ -29,7 +32,7 @@ function HosRegistration({ logo }) {
       })
         .then((res) => res.json())
         .then((user) => {
-          console.log(user);
+          history.push("/hospital");
         })
         .catch((err) => console.log(err));
     } else {

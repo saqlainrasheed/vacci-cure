@@ -1,8 +1,26 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
+import { LOGIN } from "../../constants";
+import { useDispatch } from "react-redux";
+
 import "./forms.css";
 function Login({ logo }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const history = useHistory();
+
+  const dispatch = useDispatch();
+
+  const login = (user, role) => {
+    return {
+      type: LOGIN,
+      payload: {
+        user: user,
+        authorized: true,
+        role: role,
+      },
+    };
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -16,10 +34,16 @@ function Login({ logo }) {
     })
       .then((res) => res.json())
       .then((user) => {
-        console.log(user);
-        // if (user) {
-        //   <Redirect to="/parents" />;
-        // }
+        if (user.user_role === "hospital") {
+          dispatch(login(user));
+          history.push("/hospital");
+        } else if (user.user_role === "admin") {
+          dispatch(login(user));
+          history.push("/admin");
+        } else {
+          dispatch(login(user));
+          history.push("/parents");
+        }
       })
       .catch((err) => console.log(err));
   };
@@ -118,4 +142,5 @@ function Login({ logo }) {
     </>
   );
 }
+
 export default Login;

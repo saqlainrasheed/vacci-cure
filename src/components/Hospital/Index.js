@@ -1,8 +1,14 @@
 import React from "react";
+import { useSelector } from "react-redux";
+import { Redirect } from "react-router";
 import profile from "../../images/profile.png";
 import "./style.css";
 
 export default function Index({ logo }) {
+  const { user, authorized } = useSelector((state) => state);
+  if (!authorized) {
+    return <Redirect to="/login" />;
+  }
   return (
     <>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -103,20 +109,20 @@ export default function Index({ logo }) {
       </main>
 
       <div className="container">
-        <form class="row">
-          <div class="col-8">
-            <label for="inputPassword2" class="visually-hidden">
+        <form className="row">
+          <div className="col-8">
+            <label htmlFor="inputPassword2" className="visually-hidden">
               Search child by name or ID
             </label>
             <input
               type="password"
-              class="form-control"
+              className="form-control"
               id="inputPassword2"
               placeholder="Search child by name or ID"
             />
           </div>
-          <div class="col-4">
-            <button type="submit" class="btn btn-primary mb-3">
+          <div className="col-4">
+            <button type="submit" className="btn btn-primary mb-3">
               Search
             </button>
           </div>

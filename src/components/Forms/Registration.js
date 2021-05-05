@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Redirect } from "react-router";
+import { useHistory } from "react-router";
 import "./forms.css";
 function Registration({ logo }) {
   const [name, setName] = useState("");
@@ -8,6 +8,7 @@ function Registration({ logo }) {
   const [address, setAddress] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const history = useHistory();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -27,7 +28,7 @@ function Registration({ logo }) {
         .then((res) => res.json())
         .then((user) => {
           if (user) {
-            <Redirect to="/parents" exact />;
+            history.push("/parents");
           }
         })
         .catch((err) => console.log(err));

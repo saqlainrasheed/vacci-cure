@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router";
 import "./forms.css";
 function AddChild({ logo }) {
   const [childName, setChildName] = useState("");
@@ -8,19 +9,31 @@ function AddChild({ logo }) {
   const [contactNumber, setContactNumber] = useState("");
   const [address, setAddress] = useState("");
 
-  const [body, setBody] = useState({});
+  const history = useHistory();
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    const innerBody = {
-      childName,
-      fatherName,
-      dateOfBirth,
-      placeOfBirth,
-      contactNumber,
-      address,
-    };
-    setBody(innerBody);
-    console.log("Form submitted with values : ", body);
+    fetch("https://localhost:5000/register-child", {
+      method: "post",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        name: childName,
+        father_name: fatherName,
+        dob: dateOfBirth,
+        place_of_birth: placeOfBirth,
+        contact_number: contactNumber,
+        address: address,
+        //will change it latter
+        registered_by: "saq@gmail.com",
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        history.push("/parents");
+      });
   };
   return (
     <>
