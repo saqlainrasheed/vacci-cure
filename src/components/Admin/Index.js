@@ -1,14 +1,31 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Redirect } from "react-router";
+import { LOGOUT } from "../../constants";
 import profile from "../../images/profile.png";
 import "./style.css";
 
 export default function Index({ logo }) {
-  const { user, authorized } = useSelector((state) => state);
+  const { authorized } = useSelector((state) => state);
+  const dispatch = useDispatch();
+
   if (!authorized) {
     return <Redirect to="/login" />;
   }
+
+  const logout = () => {
+    return {
+      type: LOGOUT,
+      payload: {
+        user: [],
+        authorized: false,
+      },
+    };
+  };
+
+  const handleLogout = (e) => {
+    dispatch(logout());
+  };
 
   return (
     <>
@@ -96,9 +113,14 @@ export default function Index({ logo }) {
                         </a>
                       </li>
                       <li>
-                        <a className="dropdown-item" href="/logout">
+                        <button
+                          className="dropdown-item"
+                          onClick={(e) => {
+                            handleLogout(e);
+                          }}
+                        >
                           Logout
-                        </a>
+                        </button>
                       </li>
                     </ul>
                   </div>
@@ -141,7 +163,7 @@ export default function Index({ logo }) {
 
       <div className="container">
         <h2 className="h2 text-center user-list mb-4">Recent registered</h2>
-        <table class="table">
+        <table className="table">
           <thead>
             <tr>
               <th scope="col">#</th>
@@ -175,12 +197,10 @@ export default function Index({ logo }) {
               <td>1-20-2021</td>
               <td>
                 <a className="btn btn-primary" href="\edit">
-                  {" "}
-                  edit{" "}
+                  edit
                 </a>
                 <a className="btn btn-danger mx-2" href="\edit">
-                  {" "}
-                  Delete{" "}
+                  Delete
                 </a>
               </td>
             </tr>
@@ -191,12 +211,10 @@ export default function Index({ logo }) {
               <td>1-20-2021</td>
               <td>
                 <a className="btn btn-primary" href="\edit">
-                  {" "}
-                  edit{" "}
+                  edit
                 </a>
                 <a className="btn btn-danger mx-2" href="\edit">
-                  {" "}
-                  Delete{" "}
+                  Delete
                 </a>
               </td>
             </tr>

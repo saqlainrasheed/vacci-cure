@@ -17,7 +17,10 @@ const reducer = (state = initialState, action) => {
         authorized: action.payload.authorized,
       };
     case LOGOUT:
-      return state;
+      return {
+        user: [],
+        authorized: action.payload.authorized,
+      };
     case REGISTER:
       return state;
     case REGISTER_HOSPITAL:

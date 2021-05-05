@@ -1,14 +1,32 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Redirect } from "react-router";
+import { LOGOUT } from "../../constants";
 import profile from "../../images/profile.png";
 import "./style.css";
 
 export default function Index({ logo }) {
-  const { user, authorized } = useSelector((state) => state);
+  //react mapStateToProps and MapDispatchToprops hooks
+  const { authorized } = useSelector((state) => state);
+  const dispatch = useDispatch();
+  //
   if (!authorized) {
     return <Redirect to="/login" />;
   }
+  const logout = () => {
+    return {
+      type: LOGOUT,
+      payload: {
+        user: [],
+        authorized: false,
+      },
+    };
+  };
+
+  const handleLogout = (e) => {
+    dispatch(logout());
+  };
+
   return (
     <>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -66,9 +84,12 @@ export default function Index({ logo }) {
                         </a>
                       </li>
                       <li>
-                        <a className="dropdown-item" href="/logout">
+                        <button
+                          className="dropdown-item"
+                          onClick={(e) => handleLogout(e)}
+                        >
                           Logout
-                        </a>
+                        </button>
                       </li>
                     </ul>
                   </div>

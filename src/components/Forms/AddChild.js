@@ -13,7 +13,7 @@ function AddChild({ logo }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetch("https://localhost:5000/register-child", {
+    fetch("http://localhost:5000/api/register-child", {
       method: "post",
       headers: {
         "content-type": "application/json",

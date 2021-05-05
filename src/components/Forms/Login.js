@@ -11,13 +11,12 @@ function Login({ logo }) {
 
   const dispatch = useDispatch();
 
-  const login = (user, role) => {
+  const login = (user) => {
     return {
       type: LOGIN,
       payload: {
         user: user,
         authorized: true,
-        role: role,
       },
     };
   };
