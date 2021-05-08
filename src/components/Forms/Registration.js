@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router";
+import { useDispatch } from "react-redux";
+import { REGISTER } from "../../constants";
 import "./forms.css";
 function Registration({ logo }) {
   const [name, setName] = useState("");
@@ -9,6 +11,18 @@ function Registration({ logo }) {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const history = useHistory();
+
+  const dispatch = useDispatch();
+
+  const register = (user) => {
+    return {
+      type: REGISTER,
+      payload: {
+        user: user,
+        authorized: true,
+      },
+    };
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -28,10 +42,11 @@ function Registration({ logo }) {
         .then((res) => res.json())
         .then((user) => {
           if (user) {
+            dispatch(register(user));
             history.push("/parents");
           }
         })
-        .catch((err) => console.log(err));
+        .catch((err) => console.log(err.message));
     } else {
       alert("Password and confirm password doesn't match");
     }

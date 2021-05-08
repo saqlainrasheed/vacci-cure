@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router";
+import { useDispatch } from "react-redux";
+import { REGISTER_HOSPITAL } from "../../constants";
 import "./forms.css";
 
 function HosRegistration({ logo }) {
@@ -12,6 +14,18 @@ function HosRegistration({ logo }) {
   const [publicOrPrivate, setPublicOrprivate] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  const dispatch = useDispatch();
+
+  const registerHospital = (user) => {
+    return {
+      type: REGISTER_HOSPITAL,
+      payload: {
+        user: user,
+        authorized: true,
+      },
+    };
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -32,6 +46,7 @@ function HosRegistration({ logo }) {
       })
         .then((res) => res.json())
         .then((user) => {
+          dispatch(registerHospital(user));
           history.push("/hospital");
         })
         .catch((err) => console.log(err));
@@ -91,7 +106,7 @@ function HosRegistration({ logo }) {
       <div className="container form-conatainer">
         <main className="forms">
           <legend className="h1">Register Hospital</legend>
-          <form method="get" onClick={(e) => handleSubmit(e)}>
+          <form method="get" onSubmit={(e) => handleSubmit(e)}>
             <div className="row mt-4">
               <div className="col-6">
                 <label className="form-label mt-3" htmlFor="name">

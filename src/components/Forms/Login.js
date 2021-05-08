@@ -23,9 +23,13 @@ function Login({ logo }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    let token = localStorage.getItem("token");
     fetch("http://localhost:5000/api/login", {
       method: "post",
-      headers: { "content-type": "application/json" },
+      headers: {
+        "content-type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
       body: JSON.stringify({
         email: email,
         password: password,
@@ -33,6 +37,8 @@ function Login({ logo }) {
     })
       .then((res) => res.json())
       .then((user) => {
+        console.log(user);
+        localStorage.setItem("token", `Bearer ${user.token}`);
         if (user.user_role === "hospital") {
           dispatch(login(user));
           history.push("/hospital");

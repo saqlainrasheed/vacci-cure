@@ -1,13 +1,14 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function Index({ logo }) {
   return (
     <>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <div className="container">
-          <a className="navbar-brand d-flex flex-auto" href="/">
+          <Link className="navbar-brand d-flex flex-auto" to="/">
             <img src={logo} alt="Vacci-cure logo" width="150px" />
-          </a>
+          </Link>
           <button
             className="navbar-toggler "
             type="button"
@@ -22,26 +23,26 @@ export default function Index({ logo }) {
           <div className="collapse navbar-collapse " id="navbarNav">
             <ul className="navbar-nav w-100 d-flex justify-content-between">
               <li className="nav-item">
-                <a className="nav-link active" aria-current="page" href="/">
+                <Link className="nav-link active" aria-current="page" to="/">
                   Home
-                </a>
+                </Link>
               </li>
               <div className="d-flex float-right">
                 <li className="nav-item">
-                  <a
+                  <Link
                     className="nav-link btn btn-primary text-light"
-                    href="/login"
+                    to="/login"
                   >
                     Login
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item ms-2">
-                  <a
+                  <Link
                     className="nav-link btn btn-warning text-dark"
-                    href="/register"
+                    to="/register"
                   >
                     Register
-                  </a>
+                  </Link>
                 </li>
               </div>
             </ul>

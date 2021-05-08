@@ -8,18 +8,16 @@ import Parents from "./components/Parents/Index";
 import AddChild from "./components/Forms/AddChild";
 import Registration from "./components/Forms/Registration";
 import HosRegistration from "./components/Forms/HosRegistration";
+// import jwt_decode from "jwt-decode";
 
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-import { useSelector } from "react-redux";
 export default function App() {
-  const state = useSelector((state) => state);
-  console.log(state);
   return (
     <>
       <Router>
         <Switch>
-          <Route path="/" exact>
+          <Route path="/" exact component="Homepage">
             <Homepage logo={logo} />
           </Route>
           <Route path="/parents" exact>

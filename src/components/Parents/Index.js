@@ -172,7 +172,7 @@ export default function Index({ logo }) {
                           <td>{item.dateOfVaccination}</td>
                           <td className="text-center">
                             <input
-                              class="form-check-input"
+                              className="form-check-input"
                               type="checkbox"
                               checked={item.isDone}
                             ></input>
