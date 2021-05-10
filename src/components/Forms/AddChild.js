@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router";
 import "./forms.css";
+import jwt_decode from "jwt-decode";
+
 function AddChild({ logo }) {
   const [childName, setChildName] = useState("");
   const [fatherName, setFatherName] = useState("");
@@ -13,10 +15,14 @@ function AddChild({ logo }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    let token = localStorage.getItem("token");
+    let decoded = jwt_decode(token);
+    // console.log(decoded);
     fetch("http://localhost:5000/api/register-child", {
       method: "post",
       headers: {
         "content-type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
         name: childName,
@@ -26,12 +32,11 @@ function AddChild({ logo }) {
         contact_number: contactNumber,
         address: address,
         //will change it latter
-        registered_by: "saq@gmail.com",
+        registered_by: decoded.email,
       }),
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         history.push("/parents");
       });
   };

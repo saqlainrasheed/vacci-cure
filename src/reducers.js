@@ -6,6 +6,7 @@ import {
   REGISTER_HOSPITAL,
 } from "./constants";
 import initialState from "./store";
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case LOGIN:

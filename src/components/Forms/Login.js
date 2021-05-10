@@ -37,16 +37,16 @@ function Login({ logo }) {
     })
       .then((res) => res.json())
       .then((user) => {
-        console.log(user);
-        localStorage.setItem("token", `Bearer ${user.token}`);
-        if (user.user_role === "hospital") {
-          dispatch(login(user));
+        const { data, token } = user;
+        localStorage.setItem("token", `Bearer ${token}`);
+        if (data.user_role === "hospital") {
+          dispatch(login(data));
           history.push("/hospital");
-        } else if (user.user_role === "admin") {
-          dispatch(login(user));
+        } else if (data.user_role === "admin") {
+          dispatch(login(data));
           history.push("/admin");
         } else {
-          dispatch(login(user));
+          dispatch(login(data));
           history.push("/parents");
         }
       })

@@ -9,7 +9,6 @@ import AddChild from "./components/Forms/AddChild";
 import Registration from "./components/Forms/Registration";
 import HosRegistration from "./components/Forms/HosRegistration";
 // import jwt_decode from "jwt-decode";
-
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 export default function App() {

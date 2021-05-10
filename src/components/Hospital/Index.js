@@ -25,6 +25,7 @@ export default function Index({ logo }) {
   };
 
   const handleLogout = (e) => {
+    localStorage.removeItem("token");
     dispatch(logout());
   };
 
