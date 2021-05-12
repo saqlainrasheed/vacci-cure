@@ -28,9 +28,13 @@ function Registration({ logo }) {
     e.preventDefault();
 
     if (password === confirmPassword) {
+      let token = localStorage.getItem("token");
       fetch("http://localhost:5000/api/register", {
         method: "post",
-        headers: { "content-type": "application/json" },
+        headers: {
+          "content-type": "application/json",
+          authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify({
           fullname: name,
           email: email,

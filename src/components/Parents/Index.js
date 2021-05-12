@@ -1,10 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Redirect } from "react-router";
 import { LOGOUT } from "../../constants";
 import profile from "../../images/profile.png";
+import moment from "moment";
 
 export default function Index({ logo }) {
+  let token = localStorage.getItem("token");
+  const [childInfo, setChildInfo] = useState({});
+  useEffect(() => {
+    fetch("http://localhost:5000/api/child", {
+      method: "get",
+      mode: "cors",
+      headers: {
+        "content-type": "application/json",
+        authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => setChildInfo(data[0]));
+  }, [token]);
+  console.log(childInfo);
+  let dob = new Date(childInfo.dob);
+  let child = childInfo;
   const { authorized } = useSelector((state) => state);
   const dispatch = useDispatch();
   const logout = () => {
@@ -22,48 +40,112 @@ export default function Index({ logo }) {
     dispatch(logout());
   };
 
+  const handleCheck = (e) => {
+    // e.preventDefault();
+    const id = e.target.id;
+    const name = e.target.className.toLowerCase();
+
+    fetch(`http://localhost:5000/api/child/vaccine/${id}/${name}`, {
+      method: "post",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ value: e.target.checked }),
+    })
+      .then((res) => res.json())
+      .then((data) => console.log(data))
+      .catch((err) => console.log(err));
+  };
+
   if (!authorized) {
     return <Redirect to="/login" />;
   }
-  const child = true;
-  const childInfo = {
-    name: "Muhammad Ahsan",
-    age: "2 weeks",
-    dob: "02/02/2021",
-    fatherName: "Raza Ali",
-    contact: "03474173782",
-  };
 
   const vaccineInfo = [
     {
       name: "BCG",
       disease: "Child Tb",
-      dateOfVaccination: "02/02/2021",
-      isDone: true,
+      time: 0,
+      isDone: childInfo.bcg,
     },
     {
-      name: "OPV (zero)",
+      name: "OPV_0",
       disease: "Polio",
-      dateOfVaccination: "02/02/2021",
-      isDone: false,
+      time: 0,
+      isDone: childInfo.opv_0,
     },
     {
-      name: "Pentavalent - I",
+      name: "Pentavalent_1",
       disease: "Cough/Hapatites",
-      dateOfVaccination: "18/03/2021",
-      isDone: false,
+      time: 42,
+      isDone: childInfo.pentavalent_1,
     },
     {
-      name: "PCV - I",
-      disease: "Phneumonia",
-      dateOfVaccination: "18/03/2021",
-      isDone: false,
-    },
-    {
-      name: "OPV - I",
+      name: "OPV_1",
       disease: "Polio",
-      dateOfVaccination: "18/03/2021",
-      isDone: false,
+      time: 42,
+      isDone: childInfo.opv_1,
+    },
+    {
+      name: "PCV_1",
+      disease: "Phneumonia",
+      time: 42,
+      isDone: childInfo.pcv_1,
+    },
+    {
+      name: "Pentavalent_2",
+      disease: "Cough/Hapatites",
+      time: 75,
+      isDone: childInfo.pentavalent_2,
+    },
+    {
+      name: "OPV_2",
+      disease: "Polio",
+      time: 75,
+      isDone: childInfo.opv_2,
+    },
+    {
+      name: "PCV_2",
+      disease: "Polio",
+      time: 75,
+      isDone: childInfo.pcv_2,
+    },
+    {
+      name: "Pentavalent_3",
+      disease: "Cough/Hapatites",
+      time: 105,
+      isDone: childInfo.pentavalent_3,
+    },
+    {
+      name: "OPV_3",
+      disease: "Polio",
+      time: 105,
+      isDone: childInfo.opv_3,
+    },
+    {
+      name: "PCV_3",
+      disease: "Polio",
+      time: 105,
+      isDone: childInfo.pcv_3,
+    },
+    {
+      name: "IPV",
+      disease: "Phneumonia",
+      time: 105,
+      isDone: childInfo.ipv,
+    },
+    {
+      name: "MEASLES_1",
+      disease: "Chiken pox",
+      time: 270,
+      isDone: childInfo.measles_1,
+    },
+    {
+      name: "MEASLES_2",
+      disease: "Chiken pox",
+      time: 455,
+      isDone: childInfo.measles_2,
     },
   ];
 
@@ -147,10 +229,12 @@ export default function Index({ logo }) {
                 <h3 className="text-black-50">Child Information</h3>
                 <div className="info-wrapper mt-5 mb-5">
                   <h1>{childInfo.name}</h1>
-                  <p>{childInfo.age} old </p>
-                  <p>Date of birth : {childInfo.dob} </p>
-                  <h3>S/O: {childInfo.fatherName} </h3>
-                  <p>Contact: {childInfo.contact} </p>
+                  <p>
+                    Date of birth :{" "}
+                    {`${dob.getDate()}/${dob.getMonth()}/${dob.getFullYear()} `}
+                  </p>
+                  <h3>S/O: {childInfo.father_name} </h3>
+                  <p>Contact: {childInfo.contact_number} </p>
                 </div>
               </div>
               <div className="col-6">
@@ -170,12 +254,19 @@ export default function Index({ logo }) {
                         <tr key={index}>
                           <td>{item.name}</td>
                           <td>{item.disease}</td>
-                          <td>{item.dateOfVaccination}</td>
+                          <td>
+                            {moment
+                              .utc(childInfo.dob, "YYYY-MM-DD hh:mm:ss a")
+                              .add(item.time, "days")
+                              .format("M/D/YYYY")}
+                          </td>
                           <td className="text-center">
                             <input
-                              className="form-check-input"
                               type="checkbox"
-                              checked={item.isDone}
+                              id={childInfo.v_id}
+                              className={item.name}
+                              defaultChecked={item.isDone}
+                              onChange={(e) => handleCheck(e)}
                             ></input>
                           </td>
                         </tr>
@@ -190,8 +281,6 @@ export default function Index({ logo }) {
           <h1>No child registered yet</h1>
         )}
       </main>
-      {/* if child registered => show schedule */}
-      {/* else => show No child registered yet */}
     </>
   );
 }

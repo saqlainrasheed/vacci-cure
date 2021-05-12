@@ -37,7 +37,11 @@ function AddChild({ logo }) {
     })
       .then((res) => res.json())
       .then((data) => {
-        history.push("/parents");
+        if (decoded.user_role === "hospital") {
+          history.push("/hospital");
+        } else {
+          history.push("/parents");
+        }
       });
   };
   return (
