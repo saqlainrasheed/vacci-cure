@@ -20,8 +20,7 @@ export default function Index({ logo }) {
       .then((res) => res.json())
       .then((data) => setChildInfo(data[0]));
   }, [token]);
-  console.log(childInfo);
-  let dob = new Date(childInfo.dob);
+  let dob = childInfo ? new Date(childInfo.dob) : "";
   let child = childInfo;
   const { authorized } = useSelector((state) => state);
   const dispatch = useDispatch();
@@ -67,85 +66,85 @@ export default function Index({ logo }) {
       name: "BCG",
       disease: "Child Tb",
       time: 0,
-      isDone: childInfo.bcg,
+      isDone: childInfo ? childInfo.bcg : "",
     },
     {
       name: "OPV_0",
       disease: "Polio",
       time: 0,
-      isDone: childInfo.opv_0,
+      isDone: childInfo ? childInfo.opv_0 : "",
     },
     {
       name: "Pentavalent_1",
       disease: "Cough/Hapatites",
       time: 42,
-      isDone: childInfo.pentavalent_1,
+      isDone: childInfo ? childInfo.pentavalent_1 : "",
     },
     {
       name: "OPV_1",
       disease: "Polio",
       time: 42,
-      isDone: childInfo.opv_1,
+      isDone: childInfo ? childInfo.opv_1 : "",
     },
     {
       name: "PCV_1",
       disease: "Phneumonia",
       time: 42,
-      isDone: childInfo.pcv_1,
+      isDone: childInfo ? childInfo.pcv_1 : "",
     },
     {
       name: "Pentavalent_2",
       disease: "Cough/Hapatites",
       time: 75,
-      isDone: childInfo.pentavalent_2,
+      isDone: childInfo ? childInfo.pentavalent_2 : "",
     },
     {
       name: "OPV_2",
       disease: "Polio",
       time: 75,
-      isDone: childInfo.opv_2,
+      isDone: childInfo ? childInfo.opv_2 : "",
     },
     {
       name: "PCV_2",
       disease: "Polio",
       time: 75,
-      isDone: childInfo.pcv_2,
+      isDone: childInfo ? childInfo.pcv_2 : "",
     },
     {
       name: "Pentavalent_3",
       disease: "Cough/Hapatites",
       time: 105,
-      isDone: childInfo.pentavalent_3,
+      isDone: childInfo ? childInfo.pentavalent_3 : "",
     },
     {
       name: "OPV_3",
       disease: "Polio",
       time: 105,
-      isDone: childInfo.opv_3,
+      isDone: childInfo ? childInfo.opv_3 : "",
     },
     {
       name: "PCV_3",
       disease: "Polio",
       time: 105,
-      isDone: childInfo.pcv_3,
+      isDone: childInfo ? childInfo.pcv_3 : "",
     },
     {
       name: "IPV",
       disease: "Phneumonia",
       time: 105,
-      isDone: childInfo.ipv,
+      isDone: childInfo ? childInfo.ipv : "",
     },
     {
       name: "MEASLES_1",
       disease: "Chiken pox",
       time: 270,
-      isDone: childInfo.measles_1,
+      isDone: childInfo ? childInfo.measles_1 : "",
     },
     {
       name: "MEASLES_2",
       disease: "Chiken pox",
       time: 455,
-      isDone: childInfo.measles_2,
+      isDone: childInfo ? childInfo.measles_2 : "",
     },
   ];
 

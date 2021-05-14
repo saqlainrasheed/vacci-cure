@@ -103,7 +103,7 @@ function AddChild({ logo }) {
                 />
 
                 <label className="mt-3 form-label" htmlFor="father-name">
-                  Father name*
+                  Father name/Gaurdian*
                 </label>
                 <input
                   className="form-control"

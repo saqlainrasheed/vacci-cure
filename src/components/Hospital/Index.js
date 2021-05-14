@@ -1,12 +1,38 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { LOGOUT } from "../../constants";
 import profile from "../../images/profile.png";
 import "./style.css";
+import jwt_decode from "jwt-decode";
 
 export default function Index({ logo }) {
+  let token = localStorage.getItem("token");
+  const decoded = jwt_decode(token);
+
+  const [hospitalData, setHospitalData] = useState([]);
+  const [number, setNumber] = useState("");
+  const [child, setChild] = useState([]);
+
+  useEffect(() => {
+    fetch(`http://localhost:5000/api/hospital/${decoded.hospital_id}`, {
+      method: "get",
+      mode: "cors",
+      headers: {
+        "content-type": "application/json",
+        authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => setHospitalData(data))
+      .catch((err) => console.log(err));
+  }, [token, decoded.hospital_id]);
+
+  const completely_vaccinated = hospitalData.filter(
+    (item) => item.increment >= 5
+  );
+
   //react mapStateToProps and MapDispatchToprops hooks
   const { authorized } = useSelector((state) => state);
   const dispatch = useDispatch();
@@ -28,6 +54,29 @@ export default function Index({ logo }) {
     localStorage.removeItem("token");
     dispatch(logout());
   };
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+
+    fetch(`http://localhost:5000/api/child/${number}`, {
+      method: "get",
+      mode: "cors",
+      headers: {
+        "content-type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.length) {
+          console.log(data);
+          // setChild(data);
+        } else {
+          console.log({ message: "No Child found against this number." });
+        }
+      });
+  };
+
+  // console.log(child);
 
   return (
     <>
@@ -110,9 +159,9 @@ export default function Index({ logo }) {
             <div className="card p-4">
               <div className="card-body">
                 <h5 className="card-title">
-                  Registered Child by "hospital name"
+                  Registered Child by {decoded.hospital_name}
                 </h5>
-                <p className="card-text h1">24</p>
+                <p className="card-text h1">{hospitalData.length}</p>
                 <Link to="/" className="text-end">
                   View all
                 </Link>
@@ -123,7 +172,7 @@ export default function Index({ logo }) {
             <div className="card p-4">
               <div className="card-body">
                 <h5 className="card-title">Completely vaccinated</h5>
-                <p className="card-text h1">4</p>
+                <p className="card-text h1">{completely_vaccinated.length}</p>
                 <Link to="/">View all</Link>
               </div>
             </div>
@@ -132,16 +181,18 @@ export default function Index({ logo }) {
       </main>
 
       <div className="container">
-        <form className="row">
+        <form className="row" onSubmit={(e) => handleSearch(e)}>
           <div className="col-8">
-            <label htmlFor="inputPassword2" className="visually-hidden">
-              Search child by name or ID
+            <label htmlFor="number" className="visually-hidden">
+              Search child by contact number...
             </label>
             <input
-              type="password"
+              onChange={(e) => setNumber(e.target.value)}
+              type="text"
               className="form-control"
-              id="inputPassword2"
-              placeholder="Search child by name or ID"
+              id="search"
+              required
+              placeholder="Search child by contact number..."
             />
           </div>
           <div className="col-4">
