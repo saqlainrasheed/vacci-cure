@@ -18,7 +18,8 @@ export default function Index({ logo }) {
       },
     })
       .then((res) => res.json())
-      .then((data) => setChildInfo(data[0]));
+      .then((data) => setChildInfo(data[0]))
+      .catch((err) => console.log("No child found"));
   }, [token]);
   let dob = childInfo ? new Date(childInfo.dob) : "";
   let child = childInfo;
@@ -229,7 +230,7 @@ export default function Index({ logo }) {
                 <div className="info-wrapper mt-5 mb-5">
                   <h1>{childInfo.name}</h1>
                   <p>
-                    Date of birth :{" "}
+                    Date of birth :
                     {`${dob.getDate()}/${dob.getMonth()}/${dob.getFullYear()} `}
                   </p>
                   <h3>S/O: {childInfo.father_name} </h3>

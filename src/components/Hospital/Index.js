@@ -6,16 +6,29 @@ import { LOGOUT } from "../../constants";
 import profile from "../../images/profile.png";
 import "./style.css";
 import jwt_decode from "jwt-decode";
+import moment from "moment";
 
 export default function Index({ logo }) {
   let token = localStorage.getItem("token");
-  const decoded = jwt_decode(token);
+  let decoded = "";
+  try {
+    decoded = jwt_decode(token);
+  } catch (e) {
+    console.log(e);
+  }
+  //react mapStateToProps and MapDispatchToprops hooks
+  const { authorized, user } = useSelector((state) => state);
+  const dispatch = useDispatch();
 
   const [hospitalData, setHospitalData] = useState([]);
   const [number, setNumber] = useState("");
-  const [child, setChild] = useState([]);
+  const [child, setChild] = useState({});
 
   useEffect(() => {
+    if (number === "") {
+      setChild({});
+    }
+
     fetch(`http://localhost:5000/api/hospital/${decoded.hospital_id}`, {
       method: "get",
       mode: "cors",
@@ -27,19 +40,12 @@ export default function Index({ logo }) {
       .then((res) => res.json())
       .then((data) => setHospitalData(data))
       .catch((err) => console.log(err));
-  }, [token, decoded.hospital_id]);
+  }, [token, decoded.hospital_id, number, authorized]);
 
   const completely_vaccinated = hospitalData.filter(
     (item) => item.increment >= 5
   );
 
-  //react mapStateToProps and MapDispatchToprops hooks
-  const { authorized } = useSelector((state) => state);
-  const dispatch = useDispatch();
-
-  if (!authorized) {
-    return <Redirect to="/login" />;
-  }
   const logout = () => {
     return {
       type: LOGOUT,
@@ -50,33 +56,142 @@ export default function Index({ logo }) {
     };
   };
 
-  const handleLogout = (e) => {
-    localStorage.removeItem("token");
-    dispatch(logout());
-  };
-
   const handleSearch = (e) => {
     e.preventDefault();
+    let token = localStorage.getItem("token");
 
     fetch(`http://localhost:5000/api/child/${number}`, {
       method: "get",
       mode: "cors",
       headers: {
         "content-type": "application/json",
+        authorization: `Bearer ${token}`,
       },
     })
       .then((res) => res.json())
       .then((data) => {
         if (data.length) {
-          console.log(data);
-          // setChild(data);
+          setChild(data[0]);
         } else {
           console.log({ message: "No Child found against this number." });
         }
       });
   };
 
-  // console.log(child);
+  const handleCheck = (e) => {
+    // e.preventDefault();
+    const id = e.target.id;
+    const name = e.target.className.toLowerCase();
+
+    fetch(`http://localhost:5000/api/child/vaccine/${id}/${name}`, {
+      method: "post",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ value: e.target.checked }),
+    })
+      .then((res) => res.json())
+      .then((data) => console.log(data))
+      .catch((err) => console.log(err));
+  };
+
+  const handleLogout = (e) => {
+    localStorage.removeItem("token");
+    dispatch(logout());
+  };
+
+  if (!authorized || user.length === 0) {
+    return <Redirect to="/login" />;
+  }
+
+  const vaccineInfo = [
+    {
+      name: "BCG",
+      disease: "Child Tb",
+      time: 0,
+      isDone: child ? child.bcg : "",
+    },
+    {
+      name: "OPV_0",
+      disease: "Polio",
+      time: 0,
+      isDone: child ? child.opv_0 : "",
+    },
+    {
+      name: "Pentavalent_1",
+      disease: "Cough/Hapatites",
+      time: 42,
+      isDone: child ? child.pentavalent_1 : "",
+    },
+    {
+      name: "OPV_1",
+      disease: "Polio",
+      time: 42,
+      isDone: child ? child.opv_1 : "",
+    },
+    {
+      name: "PCV_1",
+      disease: "Phneumonia",
+      time: 42,
+      isDone: child ? child.pcv_1 : "",
+    },
+    {
+      name: "Pentavalent_2",
+      disease: "Cough/Hapatites",
+      time: 75,
+      isDone: child ? child.pentavalent_2 : "",
+    },
+    {
+      name: "OPV_2",
+      disease: "Polio",
+      time: 75,
+      isDone: child ? child.opv_2 : "",
+    },
+    {
+      name: "PCV_2",
+      disease: "Polio",
+      time: 75,
+      isDone: child ? child.pcv_2 : "",
+    },
+    {
+      name: "Pentavalent_3",
+      disease: "Cough/Hapatites",
+      time: 105,
+      isDone: child ? child.pentavalent_3 : "",
+    },
+    {
+      name: "OPV_3",
+      disease: "Polio",
+      time: 105,
+      isDone: child ? child.opv_3 : "",
+    },
+    {
+      name: "PCV_3",
+      disease: "Polio",
+      time: 105,
+      isDone: child ? child.pcv_3 : "",
+    },
+    {
+      name: "IPV",
+      disease: "Phneumonia",
+      time: 105,
+      isDone: child ? child.ipv : "",
+    },
+    {
+      name: "MEASLES_1",
+      disease: "Chiken pox",
+      time: 270,
+      isDone: child ? child.measles_1 : "",
+    },
+    {
+      name: "MEASLES_2",
+      disease: "Chiken pox",
+      time: 455,
+      isDone: child ? child.measles_2 : "",
+    },
+  ];
+  // let dob = child[0] ? new Date(child.dob) : "";
 
   return (
     <>
@@ -202,6 +317,67 @@ export default function Index({ logo }) {
           </div>
         </form>
       </div>
+
+      {Object.keys(child).length !== 0 ? (
+        <main>
+          <div className="container">
+            <div className="row mt-5">
+              <div className="col-6">
+                <h3 className="text-black-50">Child Information</h3>
+                <div className="info-wrapper mt-5 mb-5">
+                  <h1>{child.name}</h1>
+                  <p>
+                    Date of birth :
+                    {/* {`${dob.getDate()}/${dob.getMonth()}/${dob.getFullYear()} `} */}
+                  </p>
+                  <h3>S/O: {child.father_name} </h3>
+                  <p>Contact: {child.contact_number} </p>
+                </div>
+              </div>
+              <div className="col-6">
+                <h3 className="text-black-50">Schedule</h3>
+                <div className="schedule-wrapper info-wrapper mt-5 mb-5">
+                  <table className="table">
+                    <thead>
+                      <tr>
+                        <th>Vaccine</th>
+                        <th>Disease</th>
+                        <th>Date of Vaccination</th>
+                        <th>Vaccinated</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {vaccineInfo.map((item, index) => (
+                        <tr key={index}>
+                          <td>{item.name}</td>
+                          <td>{item.disease}</td>
+                          <td>
+                            {moment
+                              .utc(child.dob, "YYYY-MM-DD hh:mm:ss a")
+                              .add(item.time, "days")
+                              .format("M/D/YYYY")}
+                          </td>
+                          <td className="text-center">
+                            <input
+                              type="checkbox"
+                              id={child.v_id}
+                              className={item.name}
+                              defaultChecked={item.isDone}
+                              onChange={(e) => handleCheck(e)}
+                            ></input>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+      ) : (
+        <h1>No child found yet</h1>
+      )}
     </>
   );
 }
