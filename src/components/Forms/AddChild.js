@@ -39,6 +39,8 @@ function AddChild({ logo }) {
       .then((data) => {
         if (decoded.user_role === "hospital") {
           history.push("/hospital");
+        } else if (decoded.user_role === "admin") {
+          history.push("/admin");
         } else {
           history.push("/parents");
         }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Redirect } from "react-router";
 import { LOGOUT } from "../../constants";
@@ -9,9 +9,45 @@ export default function Index({ logo }) {
   const { authorized } = useSelector((state) => state);
   const dispatch = useDispatch();
 
+  const [child, setChild] = useState([]);
+  const [hospital, setHospital] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:5000/api/all-childs")
+      .then((res) => res.json())
+      .then((data) => setChild(data))
+      .catch((err) => console.log);
+
+    fetch("http://localhost:5000/api/all-hospitals")
+      .then((res) => res.json())
+      .then((data) => setHospital(data))
+      .catch((err) => console.log);
+  }, []);
+
+  console.log(hospital);
+
   if (!authorized) {
     return <Redirect to="/login" />;
   }
+
+  const handleEdit = (e) => {
+    return;
+  };
+
+  const handleDelete = (e) => {
+    const id = e.target.id;
+    console.log(id);
+    fetch(`http://localhost:5000/api/child/${id}`, {
+      method: "delete",
+      mode: "cors",
+      headers: {
+        "content-type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => setChild(data))
+      .catch((err) => console.log);
+  };
 
   const logout = () => {
     return {
@@ -141,7 +177,7 @@ export default function Index({ logo }) {
             <div className="card p-4">
               <div className="card-body">
                 <h5 className="card-title">Total Registered Child</h5>
-                <p className="card-text h1">120</p>
+                <p className="card-text h1">{child.length}</p>
                 <a href="/" className="text-end">
                   View all
                 </a>
@@ -152,7 +188,7 @@ export default function Index({ logo }) {
             <div className="card p-4">
               <div className="card-body">
                 <h5 className="card-title">Total Registered Hospitals</h5>
-                <p className="card-text h1">22</p>
+                <p className="card-text h1">{hospital.length}</p>
                 <a href="/">View all</a>
               </div>
             </div>
@@ -163,7 +199,9 @@ export default function Index({ logo }) {
       {/* // Here we will show the list registered users */}
 
       <div className="container">
-        <h2 className="h2 text-center user-list mb-4">Recent registered</h2>
+        <h2 className="h2 text-center user-list mb-4">
+          Recent Registered Childs
+        </h2>
         <table className="table">
           <thead>
             <tr>
@@ -175,50 +213,31 @@ export default function Index({ logo }) {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <td>Zeeshan</td>
-              <td>Ahmed ali</td>
-              <td>1-20-2021</td>
-              <td>
-                <a className="btn btn-primary" href="\edit">
-                  {" "}
-                  edit{" "}
-                </a>
-                <a className="btn btn-danger mx-2" href="\delete">
-                  {" "}
-                  Delete{" "}
-                </a>
-              </td>
-            </tr>
-            <tr>
-              <th scope="row">2</th>
-              <td>Hussain</td>
-              <td>Zeeshan wajid</td>
-              <td>1-20-2021</td>
-              <td>
-                <a className="btn btn-primary" href="\edit">
-                  edit
-                </a>
-                <a className="btn btn-danger mx-2" href="\edit">
-                  Delete
-                </a>
-              </td>
-            </tr>
-            <tr>
-              <th scope="row">2</th>
-              <td>Michael</td>
-              <td> John Mike</td>
-              <td>1-20-2021</td>
-              <td>
-                <a className="btn btn-primary" href="\edit">
-                  edit
-                </a>
-                <a className="btn btn-danger mx-2" href="\edit">
-                  Delete
-                </a>
-              </td>
-            </tr>
+            {child.map((child, index) => {
+              return (
+                <tr key={index}>
+                  <th scope="row">{index + 1}</th>
+                  <td>{child.name}</td>
+                  <td>{child.father_name}</td>
+                  <td>{child.dob.split("T")[0]} </td>
+                  <td>
+                    <button
+                      className="btn btn-primary"
+                      onClick={(e) => handleEdit(e)}
+                    >
+                      edit
+                    </button>
+                    <button
+                      id={child.child_id}
+                      className="btn btn-danger mx-2"
+                      onClick={(e) => handleDelete(e)}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
