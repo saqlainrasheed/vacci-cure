@@ -14,7 +14,6 @@ function AddChild({ logo }) {
   const history = useHistory();
 
   const handleSubmit = (e) => {
-    e.preventDefault();
     let token = localStorage.getItem("token");
     let decoded = jwt_decode(token);
     // console.log(decoded);

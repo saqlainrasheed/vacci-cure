@@ -6,11 +6,51 @@ import profile from "../../images/profile.png";
 import "./style.css";
 
 export default function Index({ logo }) {
+  let token = localStorage.getItem("token");
   const { authorized } = useSelector((state) => state);
   const dispatch = useDispatch();
 
   const [child, setChild] = useState([]);
   const [hospital, setHospital] = useState([]);
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [checkNewPassword, setCheckNewPassword] = useState("");
+  const [passErr, setPassErr] = useState("");
+
+  const handleChangePassword = (e) => {
+    e.preventDefault();
+    if (oldPassword === newPassword) {
+      return setPassErr("Old and new passwords are same...");
+    }
+    if (newPassword !== checkNewPassword) {
+      return setPassErr("New password and Re-enter password does not  match.");
+    }
+
+    fetch("http://localhost:5000/api/change-password", {
+      method: "put",
+      mode: "cors",
+      headers: {
+        "content-type": "application/json",
+        authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        oldPassword,
+        newPassword,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.message === "No user found.") return setPassErr(data.message);
+        setPassErr(data.message);
+        document.querySelector("#close").click();
+        const alert = document.getElementById("alert");
+        alert.classList.remove("alert-danger");
+        alert.classList.add("alert-success");
+      })
+      .catch((err) => {
+        setPassErr("An internal error occurs.");
+      });
+  };
 
   useEffect(() => {
     fetch("http://localhost:5000/api/all-childs")
@@ -140,14 +180,18 @@ export default function Index({ logo }) {
                       aria-labelledby="dropdownMenuButton1"
                     >
                       <li>
-                        <a className="dropdown-item" href="/change-password">
+                        <button
+                          className="dropdown-item"
+                          data-bs-toggle="modal"
+                          data-bs-target="#changePasswordModal"
+                        >
                           Change Password
-                        </a>
+                        </button>
                       </li>
                       <li>
-                        <a className="dropdown-item" href="/edit-profile">
+                        {/* <a className="dropdown-item" href="/edit-profile">
                           Edit profile
-                        </a>
+                        </a> */}
                       </li>
                       <li>
                         <button
@@ -167,6 +211,86 @@ export default function Index({ logo }) {
           </div>
         </div>
       </nav>
+
+      <div
+        className="modal fade"
+        id="changePasswordModal"
+        tabIndex="-1"
+        aria-labelledby="changePasswordModaLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog modal-dialog-centered">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="exampleModalLabel">
+                Change Password
+              </h5>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+                id="close"
+              ></button>
+            </div>
+            <div className="modal-body">
+              {passErr ? (
+                <div className="alert alert-danger" id="alert" role="alert">
+                  {passErr}
+                </div>
+              ) : (
+                ""
+              )}
+              <label className="form-label mt-3" htmlFor="password">
+                Old Password
+              </label>
+              <input
+                className="form-control"
+                type="password"
+                name="password"
+                id="password"
+                autoComplete="current-password"
+                required
+                onChange={(e) => setOldPassword(e.target.value)}
+              />
+              <label className="form-label mt-3" htmlFor="password">
+                New Password
+              </label>
+              <input
+                className="form-control"
+                type="password"
+                name="password"
+                id="password"
+                autoComplete="current-password"
+                required
+                onChange={(e) => setNewPassword(e.target.value)}
+              />
+              <label className="form-label mt-3" htmlFor="password">
+                Re-enter New Password
+              </label>
+              <input
+                className="form-control"
+                type="password"
+                name="password"
+                id="password"
+                autoComplete="current-password"
+                required
+                onChange={(e) => setCheckNewPassword(e.target.value)}
+              />
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-primary"
+                onClick={(e) => handleChangePassword(e)}
+              >
+                Change password
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* // Two grid view will go here 
       //1 --> total registered child 
       //2 --> total
