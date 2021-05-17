@@ -8,6 +8,7 @@ function Login({ logo }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const history = useHistory();
+  const [errMsg, setErrMsg] = useState("");
 
   const dispatch = useDispatch();
 
@@ -38,6 +39,7 @@ function Login({ logo }) {
       .then((res) => res.json())
       .then((user) => {
         const { data, token } = user;
+        setErrMsg(user.message);
         localStorage.setItem("token", `Bearer ${token}`);
         if (data.user_role === "hospital") {
           dispatch(login(data));
@@ -104,6 +106,7 @@ function Login({ logo }) {
         <main className="forms">
           <legend className="h1">Login</legend>
           <form method="get" onSubmit={(e) => handleSubmit(e)}>
+            {errMsg ? <p className="text-danger alert">{errMsg}</p> : ""}
             <label className="form-label mt-4" htmlFor="email">
               Email
             </label>

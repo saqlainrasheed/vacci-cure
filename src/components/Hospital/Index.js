@@ -119,6 +119,28 @@ export default function Index({ logo }) {
       });
   };
 
+  const [allRegistereBy, setAllRegistereBy] = useState([]);
+
+  const handleDelete = (e) => {
+    const id = e.target.id;
+    fetch(`http://localhost:5000/api/child/${id}`, {
+      method: "delete",
+      mode: "cors",
+      headers: {
+        "content-type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => setAllRegistereBy(data))
+      .catch((err) => console.log);
+  };
+
+  const getAll = () => {
+    fetch("http://localhost:5000/api/all-childs")
+      .then((res) => res.json())
+      .then((data) => setAllRegistereBy(data));
+  };
+
   const handleCheck = (e) => {
     // e.preventDefault();
     const id = e.target.id;
@@ -232,7 +254,6 @@ export default function Index({ logo }) {
       isDone: child ? child.measles_2 : "",
     },
   ];
-  // let dob = child[0] ? new Date(child.dob) : "";
 
   return (
     <>
@@ -257,9 +278,9 @@ export default function Index({ logo }) {
               <li className="nav-item"></li>
               <div className="d-flex float-right">
                 <li className="nav-item">
-                  <Link to="/add-child" className="btn btn-primary">
+                  <a href="/add-child" className="btn btn-primary">
                     + Register child
-                  </Link>
+                  </a>
                 </li>
                 <li className="nav-item ms-2">
                   <div className="dropdown">
@@ -377,10 +398,10 @@ export default function Index({ logo }) {
                 onChange={(e) => setCheckNewPassword(e.target.value)}
               />
             </div>
-            <div class="modal-footer">
+            <div className="modal-footer">
               <button
                 type="button"
-                class="btn btn-primary"
+                className="btn btn-primary"
                 onClick={(e) => handleChangePassword(e)}
               >
                 Change password
@@ -401,9 +422,15 @@ export default function Index({ logo }) {
                   Registered Child by {decoded.hospital_name}
                 </h5>
                 <p className="card-text h1">{hospitalData.length}</p>
-                <Link to="/" className="text-end">
+                <button
+                  to="/"
+                  className="text-center d-float btn btn-success text-white"
+                  data-bs-toggle="modal"
+                  data-bs-target="#viewAllRegistered"
+                  onClick={(e) => getAll(e)}
+                >
                   View all
-                </Link>
+                </button>
               </div>
             </div>
           </div>
@@ -412,12 +439,143 @@ export default function Index({ logo }) {
               <div className="card-body">
                 <h5 className="card-title">Completely vaccinated</h5>
                 <p className="card-text h1">{completely_vaccinated.length}</p>
-                <Link to="/">View all</Link>
+                <button
+                  to="/"
+                  className="text-center d-float btn btn-success text-white"
+                  data-bs-toggle="modal"
+                  data-bs-target="#viewAllCompleted"
+                >
+                  View all
+                </button>
               </div>
             </div>
           </div>
         </div>
       </main>
+      {/* VIEW ALL MODAL */}
+      <div
+        className="modal fade"
+        id="viewAllRegistered"
+        tabIndex="-1"
+        aria-labelledby="viewAllRegisteredLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="exampleModalLabel">
+                All Register under {decoded.hospital_name}
+              </h5>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+
+            <div className="modal-body">
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Dob</th>
+                    <th>Delete</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {allRegistereBy.length
+                    ? allRegistereBy
+                        .filter((item) => item.registered_by === decoded.email)
+                        .map((item, index) => {
+                          return (
+                            <tr key={index} id={item.child_id}>
+                              <td>{item.name}</td>
+                              <td>
+                                {moment
+                                  .utc(item.dob, "YYYY-MM-DD hh:mm:ss a")
+                                  .format("D/M/YYYY")}
+                              </td>
+                              <td>
+                                <button
+                                  id={item.child_id}
+                                  className="btn btn-danger"
+                                  onClick={(e) => handleDelete(e)}
+                                >
+                                  Delete
+                                </button>
+                              </td>
+                            </tr>
+                          );
+                        })
+                    : "No child Registered yet"}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* VIEW Completely VACCCINATED MODAL */}
+      <div
+        className="modal fade"
+        id="viewAllCompleted"
+        tabIndex="-1"
+        aria-labelledby="viewAllCompletedLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="exampleModalLabel">
+                Modal title
+              </h5>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div className="modal-body">
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Dob</th>
+                    <th>Delete</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {completely_vaccinated.length
+                    ? completely_vaccinated.map((item, index) => {
+                        return (
+                          <tr key={index} id={item.child_id}>
+                            <td>{item.name}</td>
+                            <td>
+                              {moment
+                                .utc(item.dob, "YYYY-MM-DD hh:mm:ss a")
+                                .format("D/M/YYYY")}
+                            </td>
+                            <td>
+                              <button
+                                id={item.child_id}
+                                className="btn btn-danger"
+                                onClick={(e) => handleDelete(e)}
+                              >
+                                Delete
+                              </button>
+                            </td>
+                          </tr>
+                        );
+                      })
+                    : "No child Registered yet"}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <div className="container">
         <form className="row" onSubmit={(e) => handleSearch(e)}>

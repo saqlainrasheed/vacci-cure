@@ -14,9 +14,9 @@ function AddChild({ logo }) {
   const history = useHistory();
 
   const handleSubmit = (e) => {
+    e.preventDefault();
     let token = localStorage.getItem("token");
     let decoded = jwt_decode(token);
-    // console.log(decoded);
     fetch("http://localhost:5000/api/register-child", {
       method: "post",
       headers: {
@@ -30,7 +30,6 @@ function AddChild({ logo }) {
         place_of_birth: placeOfBirth,
         contact_number: contactNumber,
         address: address,
-        //will change it latter
         registered_by: decoded.email,
       }),
     })
@@ -43,7 +42,8 @@ function AddChild({ logo }) {
         } else {
           history.push("/parents");
         }
-      });
+      })
+      .catch((err) => console.log(err));
   };
   return (
     <>

@@ -5,6 +5,9 @@ import { LOGOUT } from "../../constants";
 import profile from "../../images/profile.png";
 import "./style.css";
 
+import jwt_decode from "jwt-decode";
+import moment from "moment";
+
 export default function Index({ logo }) {
   let token = localStorage.getItem("token");
   const { authorized } = useSelector((state) => state);
@@ -60,11 +63,46 @@ export default function Index({ logo }) {
 
     fetch("http://localhost:5000/api/all-hospitals")
       .then((res) => res.json())
-      .then((data) => setHospital(data))
+      .then((data) => setAllRegisterHospitals(data))
       .catch((err) => console.log);
   }, []);
 
-  console.log(hospital);
+  let decoded = "";
+  try {
+    decoded = jwt_decode(token);
+  } catch (e) {
+    console.log(e);
+  }
+  const [allRegistereBy, setAllRegistereBy] = useState([]);
+  const [allRegisterHospitals, setAllRegisterHospitals] = useState([]);
+
+  const getAll = () => {
+    fetch("http://localhost:5000/api/all-childs")
+      .then((res) => res.json())
+      .then((data) => setAllRegistereBy(data));
+  };
+
+  const getAllHospitals = () => {
+    fetch("http://localhost:5000/api/all-hospital")
+      .then((res) => res.json())
+      .then((data) => setAllRegisterHospitals(data));
+  };
+
+  const handleHospitalDelete = (e) => {
+    const id = e.target.id;
+    fetch(`http://localhost:5000/api/hospital/${id}`, {
+      method: "delete",
+      mode: "cors",
+      headers: {
+        "content-type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setAllRegisterHospitals(data);
+      })
+      .catch((err) => console.log);
+  };
 
   if (!authorized) {
     return <Redirect to="/login" />;
@@ -85,7 +123,10 @@ export default function Index({ logo }) {
       },
     })
       .then((res) => res.json())
-      .then((data) => setChild(data))
+      .then((data) => {
+        setChild(data);
+        setAllRegistereBy(data);
+      })
       .catch((err) => console.log);
   };
 
@@ -302,9 +343,15 @@ export default function Index({ logo }) {
               <div className="card-body">
                 <h5 className="card-title">Total Registered Child</h5>
                 <p className="card-text h1">{child.length}</p>
-                <a href="/" className="text-end">
+                <button
+                  to="/"
+                  className="text-center d-float btn btn-success text-white"
+                  data-bs-toggle="modal"
+                  data-bs-target="#viewAllRegistered"
+                  onClick={(e) => getAll(e)}
+                >
                   View all
-                </a>
+                </button>
               </div>
             </div>
           </div>
@@ -312,13 +359,139 @@ export default function Index({ logo }) {
             <div className="card p-4">
               <div className="card-body">
                 <h5 className="card-title">Total Registered Hospitals</h5>
-                <p className="card-text h1">{hospital.length}</p>
-                <a href="/">View all</a>
+                <p className="card-text h1">{allRegisterHospitals.length}</p>
+                <button
+                  to="/"
+                  className="text-center d-float btn btn-success text-white"
+                  data-bs-toggle="modal"
+                  data-bs-target="#viewAllHospitals"
+                  onClick={(e) => getAllHospitals(e)}
+                >
+                  View all
+                </button>
               </div>
             </div>
           </div>
         </div>
       </main>
+
+      <div
+        className="modal fade"
+        id="viewAllRegistered"
+        tabIndex="-1"
+        aria-labelledby="viewAllRegisteredLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="exampleModalLabel">
+                All Register Childs
+              </h5>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+
+            <div className="modal-body">
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Dob</th>
+                    <th>Delete</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {allRegistereBy.length
+                    ? allRegistereBy.map((item, index) => {
+                        return (
+                          <tr key={index} id={item.child_id}>
+                            <td>{item.name}</td>
+                            <td>
+                              {moment
+                                .utc(item.dob, "YYYY-MM-DD hh:mm:ss a")
+                                .format("D/M/YYYY")}
+                            </td>
+                            <td>
+                              <button
+                                id={item.child_id}
+                                className="btn btn-danger"
+                                onClick={(e) => handleDelete(e)}
+                              >
+                                Delete
+                              </button>
+                            </td>
+                          </tr>
+                        );
+                      })
+                    : "No child Registered yet"}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        className="modal fade"
+        id="viewAllHospitals"
+        tabIndex="-1"
+        aria-labelledby="viewAllHospitalsLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="exampleModalLabel">
+                All Register Hospitals
+              </h5>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+
+            <div className="modal-body">
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Contact number</th>
+                    <th>Delete</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {allRegisterHospitals.length
+                    ? allRegisterHospitals.map((item, index) => {
+                        return (
+                          <tr key={index} id={item.hospital_id}>
+                            <td>{item.hospital_name}</td>
+                            <td>{item.contact_number}</td>
+                            <td>
+                              <button
+                                id={item.hospital_id}
+                                className="btn btn-danger"
+                                onClick={(e) => handleHospitalDelete(e)}
+                              >
+                                Delete
+                              </button>
+                            </td>
+                          </tr>
+                        );
+                      })
+                    : "No Hospital Registered yet"}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
 
       {/* // Here we will show the list registered users */}
 
@@ -354,7 +527,7 @@ export default function Index({ logo }) {
                     <button
                       id={child.child_id}
                       className="btn btn-danger mx-2"
-                      onClick={(e) => handleDelete(e)}
+                      onClick={(e) => handleHospitalDelete(e)}
                     >
                       Delete
                     </button>

@@ -3,8 +3,11 @@ import { useHistory } from "react-router";
 import { useDispatch } from "react-redux";
 import { REGISTER_HOSPITAL } from "../../constants";
 import "./forms.css";
+import jwt_decode from "jwt-decode";
 
 function HosRegistration({ logo }) {
+  let token = localStorage.getItem("token");
+  let decoded = jwt_decode(token);
   const history = useHistory();
 
   const [name, setName] = useState("");
@@ -47,7 +50,11 @@ function HosRegistration({ logo }) {
         .then((res) => res.json())
         .then((user) => {
           dispatch(registerHospital(user));
-          history.push("/hospital");
+          if (decoded.user_role === "admin") {
+            history.push("/admin");
+          } else {
+            history.push("/hospital");
+          }
         })
         .catch((err) => console.log(err));
     } else {

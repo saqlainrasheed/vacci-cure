@@ -3,7 +3,16 @@ import { useHistory } from "react-router";
 import { useDispatch } from "react-redux";
 import { REGISTER } from "../../constants";
 import "./forms.css";
+import jwt_decode from "jwt-decode";
+
 function Registration({ logo }) {
+  let token = localStorage.getItem("token");
+  let decoded = "";
+  try {
+    decoded = jwt_decode(token);
+  } catch (e) {
+    console.log(e);
+  }
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [contactNumber, setContactNumber] = useState("");
@@ -47,7 +56,11 @@ function Registration({ logo }) {
         .then((user) => {
           if (user) {
             dispatch(register(user));
-            history.push("/parents");
+            if (decoded.user_role === "admin") {
+              history.push("/admin");
+            } else {
+              history.push("/parents");
+            }
           }
         })
         .catch((err) => console.log(err.message));
