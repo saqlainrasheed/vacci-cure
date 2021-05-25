@@ -7,7 +7,12 @@ import jwt_decode from "jwt-decode";
 
 function HosRegistration({ logo }) {
   let token = localStorage.getItem("token");
-  let decoded = jwt_decode(token);
+  let decoded = "";
+  try {
+    decoded = jwt_decode(token);
+  } catch (e) {
+    console.log(e);
+  }
   const history = useHistory();
 
   const [name, setName] = useState("");
@@ -36,6 +41,7 @@ function HosRegistration({ logo }) {
     if (password === confirmPassword) {
       fetch("http://localhost:5000/api/register-hospital", {
         method: "post",
+        mode: "cors",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
           hospital_name: name,

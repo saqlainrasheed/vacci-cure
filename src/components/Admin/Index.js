@@ -14,7 +14,7 @@ export default function Index({ logo }) {
   const dispatch = useDispatch();
 
   const [child, setChild] = useState([]);
-  const [hospital, setHospital] = useState([]);
+  // const [hospital, setHospital] = useState([]);
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [checkNewPassword, setCheckNewPassword] = useState("");

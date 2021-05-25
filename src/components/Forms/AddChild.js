@@ -16,7 +16,14 @@ function AddChild({ logo }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     let token = localStorage.getItem("token");
-    let decoded = jwt_decode(token);
+    let decoded = "";
+
+    try {
+      decoded = jwt_decode(token);
+    } catch (e) {
+      console.log(e);
+    }
+
     fetch("http://localhost:5000/api/register-child", {
       method: "post",
       headers: {
