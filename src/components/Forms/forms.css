@@ -1,14 +1,85 @@
-.forms {
-  width: 800px;
+.form {
+  /* width: 800px;
   border: 1px solid grey;
-  border-radius: 10px;
-  padding: 2rem;
+  border-radius: 10px; */
+  /* margin-top: 2rem; */
 }
 
 .form-conatainer {
   width: 100%;
-  height: 100vh;
+  height: auto;
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 3rem;
 }
+
+/* Login Page Styles */
+.h1 {
+  color: #233348;
+  font-weight: 800;
+  padding: 2rem 0;
+}
+
+.form-control {
+  width: 70%;
+  color: #233348;
+  outline: none;
+  margin-bottom: 1rem;
+  border: 1px solid #458ff6;
+  color: #458ff6;
+}
+.form-control::placeholder {
+  color: #93c1f9;
+}
+
+#loginImage {
+  object-fit: contain;
+  padding-left: 1rem;
+  width: 100%;
+  animation: fly 3s ease-in-out infinite;
+}
+@keyframes fly {
+  0% {
+    transform: translatey(0px);
+  }
+  50% {
+    /* box-shadow: 0 25px 15px 0px rgba(107, 107, 107, 0.2); */
+    transform: translatey(-20px);
+  }
+  100% {
+    /* box-shadow: 0 5px 15px 0px rgba(90, 197, 255, 0.6); */
+    transform: translatey(0px);
+  }
+}
+#loginFirstCol {
+  border-right: 1px solid #458ff6;
+}
+
+#rememberMe {
+  border-radius: 5px;
+}
+span {
+  padding-left: 1rem;
+  color: #233348;
+}
+
+#loginLoginBtn {
+  color: white;
+  background-color: #458ff6;
+  width: 70%;
+  box-shadow: 10px 10px 20px #458ff667;
+  font-size: 1rem;
+  font-weight: 800;
+  margin-bottom: 1.2rem;
+}
+#loginLoginBtn:hover {
+  background-color: #233348;
+}
+
+/* Registration page */
+#middleBorder {
+  border-left: 1px solid #458ff6;
+}
+
+/* Hospital Registration page */

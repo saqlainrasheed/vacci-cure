@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useHistory } from "react-router";
 import "./forms.css";
 import jwt_decode from "jwt-decode";
+import { Link } from "react-router-dom";
+import addChildImage from "../../images/addChildImage.jpg";
 
 function AddChild({ logo }) {
   const [childName, setChildName] = useState("");
@@ -54,11 +56,8 @@ function AddChild({ logo }) {
   };
   return (
     <>
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
+      <nav className="navbar navbar-expand-lg navbar-light ">
         <div className="container">
-          <a className="navbar-brand d-flex flex-auto" href="/">
-            <img src={logo} alt="Vacci-cure logo" width="150px" />
-          </a>
           <button
             className="navbar-toggler "
             type="button"
@@ -73,18 +72,25 @@ function AddChild({ logo }) {
           <div className="collapse navbar-collapse " id="navbarNav">
             <ul className="navbar-nav w-100 d-flex justify-content-between">
               <li className="nav-item">
-                <a className="nav-link active" aria-current="page" href="/">
-                  Home
-                </a>
+                <Link className="navbar-brand d-flex flex-auto" to="/">
+                  <img src={logo} alt="Vacci-cure logo" width="150px" />
+                </Link>
               </li>
-              <div className="d-flex float-right">
+              <div className="d-flex float-right  justify-content-center align-items-center">
                 <li className="nav-item">
-                  <a
-                    className="nav-link btn btn-primary text-light"
-                    href="/logout"
+                  <Link className="nav-link" aria-current="page" to="/">
+                    Home
+                  </Link>
+                </li>
+                <li className="nav-item ms-2">
+                  <Link
+                    className="nav-link"
+                    style={{ backgroundColor: "red" }}
+                    id="loginBtn"
+                    to="/logout"
                   >
                     Logout
-                  </a>
+                  </Link>
                 </li>
               </div>
             </ul>
@@ -92,17 +98,15 @@ function AddChild({ logo }) {
         </div>
       </nav>
 
-      <div className="container form-conatainer">
-        <main className="forms">
+      <div className="container form-conatainer pb-5">
+        <main className="form">
           <legend className="h1">Register a child</legend>
           <form method="post" onSubmit={(e) => handleSubmit(e)}>
             <div className="row">
               <div className="col-6">
-                <label className="form-label mt-3" htmlFor="email-address">
-                  Child name*
-                </label>
                 <input
                   className="form-control"
+                  placeholder="Child name *"
                   type="text"
                   name="child-name"
                   id="child-name"
@@ -110,11 +114,9 @@ function AddChild({ logo }) {
                   required
                 />
 
-                <label className="mt-3 form-label" htmlFor="father-name">
-                  Father name/Gaurdian*
-                </label>
                 <input
                   className="form-control"
+                  placeholder="Father/Gaurdian name *"
                   type="text"
                   name="father-name"
                   id="father-name"
@@ -122,7 +124,7 @@ function AddChild({ logo }) {
                   onChange={(e) => setFatherName(e.target.value)}
                 />
 
-                <label className="form-label mt-3" htmlFor="date-of-birth">
+                <label className="form-label" htmlFor="date-of-birth">
                   Date of birth*
                 </label>
                 <input
@@ -133,51 +135,46 @@ function AddChild({ logo }) {
                   required
                   onChange={(e) => setDateOfBirth(e.target.value)}
                 />
-              </div>
 
-              <div className="col-6">
-                <label className="form-label mt-3" htmlFor="password">
-                  Place of birth
-                </label>
                 <input
                   className="form-control"
                   type="text"
                   name="place-of-birth"
+                  placeholder="Place of birth"
                   id="place-of-birth"
                   onChange={(e) => setPlaceOfBirth(e.target.value)}
                 />
 
-                <label className="form-label mt-3" htmlFor="address">
-                  Address*
-                </label>
                 <input
                   className="form-control"
                   type="text"
                   name="address"
+                  placeholder="Address"
                   id="address"
                   required
                   onChange={(e) => setAddress(e.target.value)}
                 />
 
-                <label className="form-label mt-3" htmlFor="contact-number">
-                  Contact number*
-                </label>
                 <input
                   className="form-control"
                   type="tel"
                   name="contact-number"
                   id="contact-number"
+                  placeholder="Contact number *"
                   required
                   onChange={(e) => setContactNumber(e.target.value)}
                 />
+                <input
+                  className="btn mt-4"
+                  type="submit"
+                  value="Register child"
+                  id="loginLoginBtn"
+                />
+              </div>
+              <div id="middleBorder" className="col-6">
+                <img src={addChildImage} alt="illustration" id="loginImage" />
               </div>
             </div>
-
-            <input
-              className="btn btn-primary mt-3"
-              type="submit"
-              value="Register child"
-            />
           </form>
         </main>
       </div>
