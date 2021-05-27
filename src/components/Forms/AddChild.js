@@ -85,7 +85,7 @@ function AddChild({ logo }) {
                 <li className="nav-item ms-2">
                   <Link
                     className="nav-link"
-                    style={{ backgroundColor: "red" }}
+                    // style={{ backgroundColor: "red" }}
                     id="loginBtn"
                     to="/logout"
                   >
