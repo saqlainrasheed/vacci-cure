@@ -26,4 +26,12 @@ A web portal which helps parents to get their child vaccinated on time, by sendi
 
 ---
 
+![Hospital Panel](./screenshots/hospitalPanel.png)
+
+---
+
+# Child Panel
+
+![Hospital Panel](./screenshots/parentsPanel.png)
+
 > Note: Other gifs will get uploaded soon

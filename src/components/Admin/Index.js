@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Redirect } from "react-router";
+import { Link } from "react-router-dom";
 import { LOGOUT } from "../../constants";
 import profile from "../../images/profile.png";
 import "./style.css";
@@ -148,9 +149,9 @@ export default function Index({ logo }) {
   return (
     <>
       {/* Navbar will go here */}
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
+      <nav className="navbar navbar-expand-lg navbar-light">
         <div className="container">
-          <a className="navbar-brand d-flex flex-auto" href="/">
+          <a className="navbar-brand d-flex flex-auto" href="/homepage">
             <img src={logo} alt="Vacci-cure logo" width="150px" />
           </a>
           <button
@@ -169,52 +170,32 @@ export default function Index({ logo }) {
               <li className="nav-item"></li>
               <div className="d-flex float-right">
                 <li className="nav-item">
-                  <div className="dropdown">
-                    <button
-                      className="btn btn-primary"
-                      type="button"
-                      id="dropdownMenuButton1"
-                      data-bs-toggle="dropdown"
-                      aria-expanded="false"
-                    >
-                      + new
-                    </button>
-                    <ul
-                      className="dropdown-menu"
-                      aria-labelledby="dropdownMenuButton1"
-                    >
-                      <li>
-                        <a className="dropdown-item" href="/add-child">
-                          Register Child
-                        </a>
-                      </li>
-                      <li>
-                        <a className="dropdown-item" href="/register">
-                          new-user
-                        </a>
-                      </li>
-                      <li>
-                        <a className="dropdown-item" href="/register-hospital">
-                          Register Hospital
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
+                  <Link to="/add-child" className="nav-link ms-2">
+                    &#x2b; Register child
+                  </Link>
                 </li>
                 <li className="nav-item ms-2">
-                  <div className="dropdown">
+                  <div className="dropdown p-0">
                     <button
-                      className="btn"
+                      className="btn p-0 m-0"
                       type="button"
-                      id="dropdownMenuButton1"
+                      id="dropdownMenuButton1 loginLoginBtn"
                       data-bs-toggle="dropdown"
                       aria-expanded="false"
                     >
-                      <img
-                        src={profile}
-                        alt="Profile"
-                        style={{ width: "2rem", borderRadius: "100%" }}
-                      />
+                      <div
+                        id="loginBtn"
+                        style={{ padding: "5px 20px 5px 5px" }}
+                      >
+                        <img
+                          src={profile}
+                          alt="Profile"
+                          style={{ width: "2rem", borderRadius: "100%" }}
+                        />
+                        <span style={{ color: "white" }}>
+                          {decoded.fullname}
+                        </span>
+                      </div>
                     </button>
                     <ul
                       className="dropdown-menu"
@@ -237,9 +218,7 @@ export default function Index({ logo }) {
                       <li>
                         <button
                           className="dropdown-item"
-                          onClick={(e) => {
-                            handleLogout(e);
-                          }}
+                          onClick={(e) => handleLogout(e)}
                         >
                           Logout
                         </button>
@@ -342,10 +321,11 @@ export default function Index({ logo }) {
             <div className="card p-4">
               <div className="card-body">
                 <h5 className="card-title">Total Registered Child</h5>
-                <p className="card-text h1">{child.length}</p>
+                <p className="card-text h1 p-0">{child.length}</p>
                 <button
                   to="/"
-                  className="text-center d-float btn btn-success text-white"
+                  className="btn bg-light text-dark m-0"
+                  id="loginBtn"
                   data-bs-toggle="modal"
                   data-bs-target="#viewAllRegistered"
                   onClick={(e) => getAll(e)}
@@ -359,10 +339,13 @@ export default function Index({ logo }) {
             <div className="card p-4">
               <div className="card-body">
                 <h5 className="card-title">Total Registered Hospitals</h5>
-                <p className="card-text h1">{allRegisterHospitals.length}</p>
+                <p className="card-text h1 p-0">
+                  {allRegisterHospitals.length}
+                </p>
                 <button
                   to="/"
-                  className="text-center d-float btn btn-success text-white"
+                  className="btn bg-light text-dark m-0"
+                  id="loginBtn"
                   data-bs-toggle="modal"
                   data-bs-target="#viewAllHospitals"
                   onClick={(e) => getAllHospitals(e)}

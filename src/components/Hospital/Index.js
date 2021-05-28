@@ -10,7 +10,12 @@ import moment from "moment";
 
 export default function Index({ logo }) {
   let token = localStorage.getItem("token");
-
+  let decoded = "";
+  try {
+    decoded = jwt_decode(token);
+  } catch (e) {
+    console.log(e);
+  }
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [checkNewPassword, setCheckNewPassword] = useState("");
@@ -51,12 +56,6 @@ export default function Index({ logo }) {
       });
   };
 
-  let decoded = "";
-  try {
-    decoded = jwt_decode(token);
-  } catch (e) {
-    console.log(e);
-  }
   //react mapStateToProps and MapDispatchToprops hooks
   const { authorized, user } = useSelector((state) => state);
   const dispatch = useDispatch();
@@ -257,11 +256,11 @@ export default function Index({ logo }) {
 
   return (
     <>
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
+      <nav className="navbar navbar-expand-lg navbar-light">
         <div className="container">
-          <Link className="navbar-brand d-flex flex-auto" to="/homepage">
+          <a className="navbar-brand d-flex flex-auto" href="/homepage">
             <img src={logo} alt="Vacci-cure logo" width="150px" />
-          </Link>
+          </a>
           <button
             className="navbar-toggler"
             type="button"
@@ -278,24 +277,32 @@ export default function Index({ logo }) {
               <li className="nav-item"></li>
               <div className="d-flex float-right">
                 <li className="nav-item">
-                  <a href="/add-child" className="btn btn-primary">
-                    + Register child
-                  </a>
+                  <Link to="/add-child" className="nav-link ms-2">
+                    &#x2b; Register child
+                  </Link>
                 </li>
                 <li className="nav-item ms-2">
-                  <div className="dropdown">
+                  <div className="dropdown p-0">
                     <button
-                      className="btn"
+                      className="btn p-0 m-0"
                       type="button"
-                      id="dropdownMenuButton1"
+                      id="dropdownMenuButton1 loginLoginBtn"
                       data-bs-toggle="dropdown"
                       aria-expanded="false"
                     >
-                      <img
-                        src={profile}
-                        alt="Profile"
-                        style={{ width: "2rem", borderRadius: "100%" }}
-                      />
+                      <div
+                        id="loginBtn"
+                        style={{ padding: "5px 20px 5px 5px" }}
+                      >
+                        <img
+                          src={profile}
+                          alt="Profile"
+                          style={{ width: "2rem", borderRadius: "100%" }}
+                        />
+                        <span style={{ color: "white" }}>
+                          {decoded.hospital_name}
+                        </span>
+                      </div>
                     </button>
                     <ul
                       className="dropdown-menu"
@@ -311,9 +318,9 @@ export default function Index({ logo }) {
                         </button>
                       </li>
                       <li>
-                        {/* <Link className="dropdown-item" to="/edit-profile">
+                        {/* <a className="dropdown-item" href="/edit-profile">
                           Edit profile
-                        </Link> */}
+                        </a> */}
                       </li>
                       <li>
                         <button
@@ -331,7 +338,6 @@ export default function Index({ logo }) {
           </div>
         </div>
       </nav>
-
       <div
         className="modal fade"
         id="changePasswordModal"
@@ -413,18 +419,27 @@ export default function Index({ logo }) {
 
       {/* grid here */}
 
+      <h1 className="h1 text-center pb-0">Hospital Panel</h1>
       <main className="container d-flex mt-5 mb-5 ">
-        <div className="row">
-          <div className="col-sm-6">
-            <div className="card p-4">
+        <div className="row gx-5">
+          <div className="col-6">
+            <div
+              className="card p-4"
+              style={{
+                backgroundColor: "#233348",
+              }}
+            >
               <div className="card-body">
-                <h5 className="card-title">
+                <h5 className="card-title text-light">
                   Registered Child by {decoded.hospital_name}
                 </h5>
-                <p className="card-text h1">{hospitalData.length}</p>
+                <p className="card-text text-light h1 p-0">
+                  {hospitalData.length}
+                </p>
                 <button
                   to="/"
-                  className="text-center d-float btn btn-success text-white"
+                  className="btn bg-light text-dark m-0"
+                  id="loginBtn"
                   data-bs-toggle="modal"
                   data-bs-target="#viewAllRegistered"
                   onClick={(e) => getAll(e)}
@@ -434,14 +449,17 @@ export default function Index({ logo }) {
               </div>
             </div>
           </div>
-          <div className="col-sm-6">
-            <div className="card p-4">
+          <div className="col-6 ">
+            <div className="card p-4" style={{ backgroundColor: "#233348" }}>
               <div className="card-body">
-                <h5 className="card-title">Completely vaccinated</h5>
-                <p className="card-text h1">{completely_vaccinated.length}</p>
+                <h5 className="card-title text-light">Completely vaccinated</h5>
+                <p className="card-text text-light h1 p-0">
+                  {completely_vaccinated.length}
+                </p>
                 <button
                   to="/"
-                  className="text-center d-float btn btn-success text-white"
+                  className="btn bg-light text-dark m-0"
+                  id="loginBtn"
                   data-bs-toggle="modal"
                   data-bs-target="#viewAllCompleted"
                 >
@@ -586,7 +604,7 @@ export default function Index({ logo }) {
             <input
               onChange={(e) => setNumber(e.target.value)}
               type="text"
-              className="form-control"
+              className="form-control w-100"
               id="search"
               required
               placeholder="Search child by contact number..."
@@ -605,18 +623,33 @@ export default function Index({ logo }) {
           <div className="container">
             <div className="row mt-5">
               <div className="col-6">
-                <h3 className="text-black-50">Child Information</h3>
+                <h3 className="h1 p-0">Child Information</h3>
                 <div className="info-wrapper mt-5 mb-5">
-                  <h1>{child.name}</h1>
-                  <p>
-                    Date of birth :
+                  <h1
+                    style={{
+                      fontWeight: "500",
+                      borderBottom: "3px solid #233348",
+                      width: "80%",
+                      paddingBottom: "1rem",
+                      marginBottom: "2rem",
+                    }}
+                  >
+                    {child.name}
+                  </h1>
+
+                  <p className="h5">
+                    <strong>Date of birth: </strong>
+                    {/* {`${dob.getDate()}/${dob.getMonth()}/${dob.getFullYear()} `} */}
                     {moment
                       .utc(child.dob, "YYYY-MM-DD hh:mm:ss a")
-                      .format("D/M/YYYY")}
-                    {/* {`${dob.getDate()}/${dob.getMonth()}/${dob.getFullYear()} `} */}
+                      .format("DD/MM/YYYY")}
                   </p>
-                  <h3>S/O: {child.father_name} </h3>
-                  <p>Contact: {child.contact_number} </p>
+                  <p className="h5">
+                    <strong>Father name:</strong> {child.father_name}
+                  </p>
+                  <p className="h5">
+                    <strong>Contact:</strong> {child.contact_number}{" "}
+                  </p>
                 </div>
               </div>
               <div className="col-6">
@@ -661,7 +694,7 @@ export default function Index({ logo }) {
           </div>
         </main>
       ) : (
-        <h1>No child found yet</h1>
+        <p className="h4 text-center p-5">Please search...</p>
       )}
     </>
   );

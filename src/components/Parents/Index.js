@@ -76,6 +76,7 @@ export default function Index({ logo }) {
   let child = childInfo;
   const { authorized } = useSelector((state) => state);
   const dispatch = useDispatch();
+
   const logout = () => {
     return {
       type: LOGOUT,

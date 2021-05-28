@@ -1,11 +1,11 @@
 .card {
-  width: 35em;
-  background-color: rgb(238, 236, 255);
+  /* width: 35em; */
+  background-color: #233348;
 }
 
 .card-title,
 .card-text {
-  color: rgb(65, 65, 65);
+  color: #f1f1f1;
 }
 
 .card-text {
